@@ -8,6 +8,7 @@ bucket=$name-$account_id
 echo $name $bucket $account_id
 
 aws s3api create-bucket --bucket $bucket
+
 if [ $? -eq 0 ]; then
   echo created bucket $bucket
 else
@@ -23,6 +24,7 @@ aws lambda delete-function --function-name $name-function
 aws iam delete-role-policy --role-name $name-lambda-executor --policy-name s3-bucket-access
 aws iam delete-role-policy --role-name $name-lambda-executor --policy-name logwatch-writer
 aws iam delete-role --role-name $name-lambda-executor
+aws s3 rm --recursive s3://$bucket/out/
 
 #
 # step 1 - pack up the source code
@@ -30,6 +32,7 @@ aws iam delete-role --role-name $name-lambda-executor
 
 rm $name.zip
 cd src
+npm install
 zip ../$name.zip *
 cd ..
 
@@ -90,10 +93,11 @@ aws s3api put-bucket-notification-configuration \
   --notification-configuration "$bucketnotification"
 
 
-#aws lambda invoke --function-name $name-function outfile
-#cat outfile
+## step 5: now upload a file for conversion to lambda
 
-# step 4 - cleanup
-#
-#rm outfile
+aws s3 cp setup.sh s3://$bucket/in/for-conversion.txt
+
+echo uploaded file to S3. Wait a few seconds and then list the results using
+echo aws s3 ls  s3://$bucket/out/
+
 rm $name.zip
