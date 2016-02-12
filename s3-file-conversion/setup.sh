@@ -20,11 +20,11 @@ fi
 #optional cleanup before next run
 #
 
-aws lambda delete-function --function-name $name-function
-aws iam delete-role-policy --role-name $name-lambda-executor --policy-name s3-bucket-access
-aws iam delete-role-policy --role-name $name-lambda-executor --policy-name logwatch-writer
-aws iam delete-role --role-name $name-lambda-executor
-aws s3 rm --recursive s3://$bucket/out/
+#aws lambda delete-function --function-name $name-function
+#aws iam delete-role-policy --role-name $name-lambda-executor --policy-name s3-bucket-access
+#aws iam delete-role-policy --role-name $name-lambda-executor --policy-name logwatch-writer
+#aws iam delete-role --role-name $name-lambda-executor
+#aws s3 rm --recursive s3://$bucket/out/
 
 #
 # step 1 - pack up the source code
