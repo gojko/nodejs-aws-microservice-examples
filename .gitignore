@@ -1,2 +1,4 @@
+*.zip
+**/*.zip
 node_nodules
 **/node_modules
